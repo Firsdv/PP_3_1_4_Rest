@@ -31,7 +31,7 @@ public class AdminController {
             @RequestParam(value = "deleteId", required = false) Long deleteId,
             Model model, Principal principal) {
 
-        User authUser = userRepository.findByEmail(principal.getName());// Using Email
+        User authUser = userRepository.findByEmail(principal.getName());
         model.addAttribute("authUser", authUser);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("allRoles", roleService.getRoles());
@@ -51,7 +51,7 @@ public class AdminController {
 
     @GetMapping("/new")
     public String createUser(Model model, Principal principal) {
-        User authUser = userRepository.findByEmail(principal.getName());// Using Email
+        User authUser = userRepository.findByEmail(principal.getName());
         model.addAttribute("authUser", authUser);
         model.addAttribute("user", new User());
         model.addAttribute("allRoles", roleService.getRoles());
@@ -69,7 +69,7 @@ public class AdminController {
 
     @GetMapping("/edit/{id}")
     public String editUser(@PathVariable("id") Long id, Model model, Principal principal) {
-        User authUser = userRepository.findByEmail(principal.getName());// Using Email
+        User authUser = userRepository.findByEmail(principal.getName());
         model.addAttribute("authUser", authUser);
         model.addAttribute("editUser", userService.findById(id));
         model.addAttribute("allRoles", roleService.getRoles());

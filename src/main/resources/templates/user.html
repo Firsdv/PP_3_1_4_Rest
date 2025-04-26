@@ -35,6 +35,7 @@
     <div class="container-fluid">
         <span class="navbar-text" th:if="${authUser != null}">
             <span th:text="${authUser.email}"></span>
+
             (<span th:text="${#strings.listJoin(authUser.roles.![#strings.replace(name, 'ROLE_', '')], ', ')}"></span>)
         </span>
         <form th:action="@{/logout}" method="post">
