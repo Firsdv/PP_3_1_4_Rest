@@ -44,10 +44,10 @@ public class DBInitialization {
         Role adminRole = createRoleIfNotFound(ROLE_ADMIN);
         Role userRole = createRoleIfNotFound(ROLE_USER);
 
-        createUserIfNotFound("111", "admin@example.com",
-                "AdminFirstName", "AdminLastName", Collections.singleton(adminRole));
-        createUserIfNotFound("222", "user@example.com",
-                "UserFirstName", "UserLastName", Collections.singleton(userRole));
+        createUserIfNotFound("111", "admin@example.com", "AdminFirstName",
+                "AdminLastName", Collections.singleton(adminRole));
+        createUserIfNotFound("222", "user@example.com", "UserFirstName",
+                "UserLastName", Collections.singleton(userRole));
     }
 
     private Role createRoleIfNotFound(String roleName) {
@@ -89,4 +89,3 @@ public class DBInitialization {
         }
     }
 }
-

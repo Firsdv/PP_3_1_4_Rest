@@ -1,20 +1,21 @@
 package ru.kata.spring.boot_security.demo.entityes;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
+
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 import java.util.Objects;
 
+
 @Entity
 @Table(name = "users")
+@DynamicUpdate
 public class User implements UserDetails {
 
     @Id
@@ -27,7 +28,7 @@ public class User implements UserDetails {
     @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
@@ -38,6 +39,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+
     private Set<Role> roles;
 
     public User() {
@@ -81,8 +83,7 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
     }
 
     public Set<Role> getRoles() {
