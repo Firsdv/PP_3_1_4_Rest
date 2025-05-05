@@ -15,10 +15,11 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final SuccessUserHandler successUserHandler;
-    private final UserServiceImpl userServiceImpl;
+    private final SuccessUserHandler successUserHandler;//обработака аутентификации и куда перенаправить пользователя после успешного входа в систему.
+    private final UserServiceImpl userServiceImpl;//Этот сервис используется для аутентификации пользователей.
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceImpl userServiceImpl) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler,
+                             UserServiceImpl userServiceImpl) {//контструктор внедрения Dependency Injection
         this.successUserHandler = successUserHandler;
         this.userServiceImpl = userServiceImpl;
     }
