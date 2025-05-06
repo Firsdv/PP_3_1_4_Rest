@@ -10,15 +10,13 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.List;
 
-
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService { //предоставляет методы для работы с пользователями
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-
     }
 
     @Override
@@ -62,4 +60,3 @@ public class UserServiceImpl implements UserService, UserDetailsService { //пр
         }
     }
 }
-

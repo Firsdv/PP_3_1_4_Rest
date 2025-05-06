@@ -42,87 +42,50 @@ public class User implements UserDetails {
 
     private Set<Role> roles;
 
-    public User() {
-    }
+    public User() { }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public String getFirstname() {
-        return firstname;
-    }
+    public String getFirstname() { return firstname; }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
+    public void setFirstname(String firstname) { this.firstname = firstname; }
 
-    public String getLastname() {
-        return lastname;
-    }
+    public String getLastname() { return lastname; }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() { return password; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public void setPassword(String password) { this.password = password; }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
+    public Set<Role> getRoles() { return roles; }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+    public void setRoles(Set<Role> roles) { this.roles = roles; }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
+    public Collection<? extends GrantedAuthority> getAuthorities() { return getRoles(); }
 
     @Override
-    public String getUsername() {
-        return getEmail();
-    }
+    public String getUsername() { return getEmail(); }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    public boolean isEnabled() { return true; }
 
     @Override
     public boolean equals(Object o) {

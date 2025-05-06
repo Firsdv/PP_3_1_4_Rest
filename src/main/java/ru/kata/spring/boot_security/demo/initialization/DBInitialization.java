@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.initialization; // Correct package name
+package ru.kata.spring.boot_security.demo.initialization;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,6 @@ public class DBInitialization {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";
 
-
     @Autowired
     public DBInitialization(UserService userService, RoleService roleService,
                             PasswordEncoder passwordEncoder, UserRepository userRepository) {
@@ -40,7 +39,6 @@ public class DBInitialization {
 
     @PostConstruct
     public void init() {
-
         Role adminRole = createRoleIfNotFound(ROLE_ADMIN);
         Role userRole = createRoleIfNotFound(ROLE_USER);
 
