@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,7 @@ public class AdminController {
             @RequestParam(value = "deleteId", required = false) Long deleteId,
             Model model, Principal principal) {
 
-        User authUser = userRepository.findByEmail(principal.getName());// Using Email
+        User authUser = userRepository.findByEmail(principal.getName());
         model.addAttribute("authUser", authUser);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("allRoles", roleService.getRoles());
@@ -81,8 +82,7 @@ public class AdminController {
         if (result.hasErrors()) {
             return "new";
         }
-        // Хеширование пароля перед сохранением
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Хеширование пароля перед сохранением
         userService.save(user);
         return "redirect:/admin";
     }
