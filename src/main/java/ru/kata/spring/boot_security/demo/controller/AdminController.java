@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,7 +81,7 @@ public class AdminController {
         if (result.hasErrors()) {
             return "new";
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Хеширование пароля перед сохранением
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/admin";
     }

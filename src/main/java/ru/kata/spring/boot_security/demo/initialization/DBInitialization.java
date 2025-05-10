@@ -14,6 +14,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
@@ -42,10 +43,11 @@ public class DBInitialization {
         Role adminRole = createRoleIfNotFound(ROLE_ADMIN);
         Role userRole = createRoleIfNotFound(ROLE_USER);
 
+        // Создаем пользователя с несколькими ролями
         createUserIfNotFound("111", "admin@example.com", "AdminFirstName",
-                "AdminLastName", Collections.singleton(adminRole));
-        createUserIfNotFound("222", "user@example.com", "UserFirstName",
-                "UserLastName", Collections.singleton(userRole));
+                "AdminLastName", Set.of(adminRole, userRole));
+        createUserIfNotFound("222", "user@example.com", "User FirstName",
+                "User LastName", Collections.singleton(userRole));
     }
 
     private Role createRoleIfNotFound(String roleName) {
@@ -67,23 +69,23 @@ public class DBInitialization {
     }
 
     private void createUserIfNotFound(String password, String email, String firstName, String lastName, Collection<Role> roles) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            user = new User();
+        User userOptional = userRepository.findByEmail(email);
+        if (userOptional == null) {
+            User user = new User();
             user.setPassword(passwordEncoder.encode(password));
             user.setEmail(email);
             user.setFirstname(firstName);
             user.setLastname(lastName);
-            user.setRoles((Set<Role>) roles);
+            user.setRoles(new HashSet<>(roles));
             try {
                 userService.save(user);
-                System.out.println("Created user: " + email);
+                logger.info("Created user: {}", email);
             } catch (Exception e) {
-                System.err.println("Error creating user " + email + ": " + e.getMessage());
+                logger.error("Error creating user {}: {}", email, e.getMessage());
                 throw new RuntimeException("Failed to create user: " + email, e);
             }
         } else {
-            System.out.println("User already exists: " + email);
+            logger.info("User  already exists: {}", email);
         }
     }
 }
