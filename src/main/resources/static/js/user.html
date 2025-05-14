@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f0f0; }
+        .navbar-text { margin-right: 15px; color: white; }
+        .sidebar {
+            height: calc(100vh - 56px);
+            position: fixed;
+            top: 56px;
+            left: 0;
+            width: 250px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+        .main-content { margin-left: 270px; padding: 20px; }
+        .table-responsive { margin-top: 20px; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-text" id="user-info">User Panel</span>
+        <form action="/logout" method="post" class="ms-auto">
+            <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+        </form>
+    </div>
+</nav>
+<div class="sidebar">
+    <div class="list-group">
+        <a href="/user" class="list-group-item list-group-item-action active">User</a>
+        <a href="/admin" class="list-group-item list-group-item-action">Admin</a>
+    </div>
+</div>
+<div class="main-content">
+    <h2>User Information</h2>
+    <div class="table-responsive">
+        <h3 style="background-color: #e9ecef; padding: 10px; border-radius: 5px; font-size: 1.2rem;">
+            About User
+        </h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+            </tr>
+            </thead>
+            <tbody id="userTableBody">
+            <!-- Filled by JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/js/user.js"></script>
+</body>
+</html>

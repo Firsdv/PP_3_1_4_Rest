@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -37,39 +39,70 @@ public class User implements UserDetails {
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<Role>();
 
-    private Set<Role> roles;
 
-    public User() { }
+    public User() {
+    }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getFirstname() { return firstname; }
+    public String getFirstname() {
+        return firstname;
+    }
 
-    public void setFirstname(String firstname) { this.firstname = firstname; }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-    public String getLastname() { return lastname; }
+    public String getLastname() {
+        return lastname;
+    }
 
-    public void setLastname(String lastname) { this.lastname = lastname; }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password;
+    }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public Set<Role> getRoles() { return roles; }
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-    public void setRoles(Set<Role> roles) { this.roles = roles; }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() { return getRoles(); }
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> (GrantedAuthority) role)
+                .collect(Collectors.toSet());
+
+    }
 
     @Override
     public String getUsername() { return getEmail(); }
@@ -98,4 +131,17 @@ public class User implements UserDetails {
     public int hashCode() {
         return Objects.hash(id, email);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + firstname + '\'' +
+                ", username='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
 }
