@@ -27,10 +27,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")//изменял с hasRole
-                .antMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")//изменял с hasAnyRole
+
+                // разрешаем статику по ролям
+                .antMatchers("/admin.html", "/js/admin.js").hasRole("ADMIN")
+                .antMatchers("/user.html", "/js/user.js").hasAnyRole("USER", "ADMIN")
+
+                // REST API
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/user").hasAnyRole("USER", "ADMIN")
+
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
