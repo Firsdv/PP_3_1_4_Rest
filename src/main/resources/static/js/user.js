@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const user = await response.json();
 
-        // Заполняем таблицу
         tableBody.innerHTML = `
             <tr>
                 <td>${user.id}</td>

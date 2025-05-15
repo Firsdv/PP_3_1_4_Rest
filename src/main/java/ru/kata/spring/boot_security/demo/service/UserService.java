@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.security.core.Authentication;
+import ru.kata.spring.boot_security.demo.dto.UserDto;
+import ru.kata.spring.boot_security.demo.dto.UserResponseDto;
 import ru.kata.spring.boot_security.demo.entityes.User;
 
 import java.security.Principal;
@@ -24,5 +26,9 @@ public interface UserService {
 
     User findByAuthentication(Authentication auth);
 
+    void createFromDto(UserDto userDto);
 
+    void updateFromDto(UserDto userDto);
+
+    UserResponseDto toResponseDto(User user);
 }

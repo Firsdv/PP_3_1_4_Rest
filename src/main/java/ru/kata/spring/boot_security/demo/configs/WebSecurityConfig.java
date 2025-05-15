@@ -30,15 +30,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-
-                // разрешаем статику по ролям
                 .antMatchers("/admin.html", "/js/admin.js").hasRole("ADMIN")
                 .antMatchers("/user.html", "/js/user.js").hasAnyRole("USER", "ADMIN")
-
-                // REST API
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/user").hasAnyRole("USER", "ADMIN")
-
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -51,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .permitAll();
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

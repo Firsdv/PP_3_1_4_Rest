@@ -2,12 +2,15 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.dto.UserDto;
+import ru.kata.spring.boot_security.demo.dto.UserResponseDto;
 import ru.kata.spring.boot_security.demo.entityes.Role;
 import ru.kata.spring.boot_security.demo.entityes.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -22,8 +25,10 @@ public class RestAdminController {
     }
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    public List<UserResponseDto> getAllUsers() {
+        return userService.findAll().stream()
+                .map(userService::toResponseDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/users/{id}")
@@ -33,20 +38,20 @@ public class RestAdminController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        userService.save(user);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
+        userService.createFromDto(userDto);
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        user.setId(id);
-        userService.update(user);
-        return ResponseEntity.ok(user);
+    @PostMapping("/users/update/{id}")
+    public ResponseEntity<Void> updateUserWorkaround(@PathVariable Long id, @RequestBody UserDto userDto) {
+        userDto.setId(id);
+        userService.updateFromDto(userDto);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    @PostMapping("/users/delete/{id}")
+    public ResponseEntity<Void> deleteUserWorkaround(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }

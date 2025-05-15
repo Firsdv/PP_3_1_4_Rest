@@ -25,17 +25,24 @@ async function loadUsers() {
     tbody.innerHTML = '';
 
     users.forEach(user => {
-        const roles = user.roles.map(r => r.name.replace('ROLE_', '')).join(', ');
+        const roles = user.roles
+            .map(role => role.replace('ROLE_', ''))
+            .sort((a, b) => {
+                const order = ['ADMIN', 'USER'];
+                return order.indexOf(a) - order.indexOf(b);
+            })
+            .join(', ');
+
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${user.id}</td>
-            <td>${user.firstname}</td>
-            <td>${user.lastname}</td>
-            <td>${user.email}</td>
-            <td>${roles}</td>
-            <td><button class="btn btn-sm btn-primary" onclick="openEditModal(${user.id})">Edit</button></td>
-            <td><button class="btn btn-sm btn-danger" onclick="openDeleteModal(${user.id})">Delete</button></td>
-        `;
+        <td>${user.id}</td>
+        <td>${user.firstname}</td>
+        <td>${user.lastname}</td>
+        <td>${user.email}</td>
+        <td>${roles}</td>
+        <td><button class="btn btn-sm btn-primary" onclick="openEditModal(${user.id})">Edit</button></td>
+        <td><button class="btn btn-sm btn-danger" onclick="openDeleteModal(${user.id})">Delete</button></td>
+    `;
         tbody.appendChild(row);
     });
 }
@@ -44,8 +51,8 @@ async function loadRoles() {
     const res = await fetch(API_ROLES);
     const roles = await res.json();
 
-    const roleSelects = [document.getElementById('roles'), document.getElementById('editRoles')];
-    roleSelects.forEach(select => {
+    const selects = [document.getElementById('roles'), document.getElementById('editRoles')];
+    selects.forEach(select => {
         select.innerHTML = '';
         roles.forEach(role => {
             const option = document.createElement('option');
@@ -64,12 +71,12 @@ async function addUser(e) {
         lastname: document.getElementById('lastname').value,
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
-        roles: Array.from(document.getElementById('roles').selectedOptions).map(o => ({ id: o.value }))
+        roleIds: Array.from(document.getElementById('roles').selectedOptions).map(o => Number(o.value))
     };
 
     await fetch(API_USERS, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(newUser)
     });
 
@@ -101,17 +108,17 @@ async function updateUser(e) {
     const id = document.getElementById('userId').value;
 
     const updatedUser = {
-        id: id,
+        id: Number(id),
         firstname: document.getElementById('editFirstname').value,
         lastname: document.getElementById('editLastname').value,
         email: document.getElementById('editEmail').value,
         password: document.getElementById('editPassword').value,
-        roles: Array.from(document.getElementById('editRoles').selectedOptions).map(o => ({ id: o.value }))
+        roleIds: Array.from(document.getElementById('editRoles').selectedOptions).map(o => Number(o.value))
     };
 
-    await fetch(`${API_USERS}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+    await fetch(`${API_USERS}/update/${id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(updatedUser)
     });
 
@@ -143,14 +150,23 @@ async function openDeleteModal(id) {
     document.getElementById('deleteModal').classList.add('show');
 }
 
-
 function closeDeleteModal() {
     document.getElementById('deleteModal').classList.remove('show');
 }
 
 async function confirmDeleteUser() {
     const id = document.getElementById('deleteId').value;
-    await fetch(`${API_USERS}/${id}`, { method: 'DELETE' });
+    await fetch(`${API_USERS}/delete/${id}`, {
+        method: 'POST'
+    });
     closeDeleteModal();
     await loadUsers();
+}
+
+function showTab(tab) {
+    document.getElementById("tab-users").style.display = tab === 'users' ? 'block' : 'none';
+    document.getElementById("tab-new").style.display = tab === 'new' ? 'block' : 'none';
+    document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+    const activeLink = document.querySelector(`[onclick="showTab('${tab}')"]`);
+    if (activeLink) activeLink.classList.add("active");
 }
